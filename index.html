@@ -109,6 +109,11 @@
     margin-bottom: 20px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
   }
+  .experience-card-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
   </style>
 </head>
 <body>
@@ -160,35 +165,37 @@
 
   <section>
     <h2>Experiência</h2>
-    <div class="experience-card">
-      <article>
-        <h3>Product Designer - XP Inc.</h3>
-        <p>Junho de 2021 - Presente</p>
-        <ul>
-          <li>Participei da evolução de ferramentas de atendimento e planejamento financeiro para assessores de investimentos.</li>
-          <li>Conduzi iniciativas voltadas à organização de estruturas comerciais e à melhoria da experiência de gestão em escritórios parceiros.</li>
-        </ul>
-      </article>
-    </div>
-    <div class="experience-card">
-      <article>
-        <h3>UX/UI Designer - Sinqia (Torq Inovação)</h3>
-        <p>Outubro de 2018 - Julho de 2021</p>
-        <ul>
-          <li>Colaborei com grandes players do mercado financeiro, atuando com design de serviços e interfaces digitais.</li>
-          <li>Trabalhei em projetos estratégicos com foco em inovação e arquitetura de negócio.</li>
-        </ul>
-      </article>
-    </div>
-    <div class="experience-card">
-      <article>
-        <h3>Analista de Design - Toledo do Brasil</h3>
-        <p>Janeiro de 2004 - Agosto de 2018</p>
-        <ul>
-          <li>Desenvolvi produtos físicos e digitais, incluindo hardware industrial e interfaces embarcadas.</li>
-          <li>Atuei com modelagem 3D, prototipação, UI/UX e integração software-hardware.</li>
-        </ul>
-      </article>
+    <div class="experience-card-group">
+      <div class="experience-card">
+        <article>
+          <h3>Product Designer - XP Inc.</h3>
+          <p>Junho de 2021 - Presente</p>
+          <ul>
+            <li>Participei da evolução de ferramentas de atendimento e planejamento financeiro para assessores de investimentos.</li>
+            <li>Conduzi iniciativas voltadas à organização de estruturas comerciais e à melhoria da experiência de gestão em escritórios parceiros.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="experience-card">
+        <article>
+          <h3>UX/UI Designer - Sinqia (Torq Inovação)</h3>
+          <p>Outubro de 2018 - Julho de 2021</p>
+          <ul>
+            <li>Colaborei com grandes players do mercado financeiro, atuando com design de serviços e interfaces digitais.</li>
+            <li>Trabalhei em projetos estratégicos com foco em inovação e arquitetura de negócio.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="experience-card">
+        <article>
+          <h3>Analista de Design - Toledo do Brasil</h3>
+          <p>Janeiro de 2004 - Agosto de 2018</p>
+          <ul>
+            <li>Desenvolvi produtos físicos e digitais, incluindo hardware industrial e interfaces embarcadas.</li>
+            <li>Atuei com modelagem 3D, prototipação, UI/UX e integração software-hardware.</li>
+          </ul>
+        </article>
+      </div>
     </div>
   </section>
 
