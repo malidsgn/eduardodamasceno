@@ -114,6 +114,21 @@
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 20px;
   }
+  .lang-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lang-list li {
+    background-color: #e8e8e8;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #333;
+  }
   </style>
 </head>
 <body>
@@ -143,7 +158,7 @@
 
   <section>
     <h2>Idiomas</h2>
-    <ul>
+    <ul class="lang-list">
       <li>Português (Nativo ou Bilingue)</li>
       <li>Inglês (Profissional Avançado)</li>
       <li>Espanhol (Nível Básico)</li>
