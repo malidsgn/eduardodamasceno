@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark">
+<html>
 <head>
   <meta charset="UTF-8">
   <title>Eduardo Damasceno - Currículo</title>
@@ -12,6 +12,11 @@
   </script>
 </head>
 <body class="font-sans bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
+  <div class="text-right px-6 pt-6">
+    <button id="themeToggle" class="text-sm text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500 px-3 py-1 rounded hover:bg-blue-50 dark:hover:bg-blue-900 transition">
+      Alternar tema
+    </button>
+  </div>
   <div class="max-w-3xl mx-auto my-10 p-10 bg-white dark:bg-gray-800 shadow-lg dark:shadow-md rounded-xl">
   <header class="text-center mb-10">
     <h1 class="text-4xl font-bold mb-2">Eduardo Damasceno</h1>
@@ -107,4 +112,10 @@
 
   </div>
 </body>
+<script>
+  const btn = document.getElementById('themeToggle');
+  btn.addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+  });
+</script>
 </html>
