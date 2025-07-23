@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Currículo de Eduardo Damasceno, Designer de Produto especializado em UX/UI, inovação e estratégia.">
   <title>Eduardo Damasceno - Currículo</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -14,19 +15,30 @@
 </head>
 <body class="font-sans bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
   <div class="text-right px-6 pt-6">
-    <button id="themeToggle" class="text-sm text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500 px-3 py-1 rounded hover:bg-blue-50 dark:hover:bg-blue-900 transition">
+    <button id="themeToggle" aria-label="Alternar tema escuro/claro" aria-pressed="false" class="text-sm text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500 px-3 py-1 rounded hover:bg-blue-50 dark:hover:bg-blue-900 transition flex items-center gap-2">
+      <span id="themeIcon" class="inline-block align-middle">🌞</span>
       Alternar tema
     </button>
   </div>
+  <main>
   <div class="max-w-3xl mx-auto my-10 px-4 sm:px-6 lg:px-10 py-10 bg-white dark:bg-gray-800 shadow-lg dark:shadow-md rounded-xl">
   <header class="text-center mb-10">
-    <h1 class="text-4xl font-bold mb-2">Eduardo Damasceno</h1>
-    <p class="text-lg text-gray-600 dark:text-gray-400">Designer de Produto - UX/UI - Inovação e Estratégia - Design de Serviço - Mercado Financeiro e Fintechs</p>
+    <div class="flex flex-col items-center gap-3">
+      <img src="https://www.gravatar.com/avatar/?d=mp&s=120" alt="Foto de Eduardo Damasceno" class="w-24 h-24 rounded-full border-4 border-blue-200 dark:border-blue-500 shadow-sm mb-2">
+      <h1 class="text-4xl font-bold mb-2">Eduardo Damasceno</h1>
+      <p class="text-base text-gray-700 dark:text-gray-300 max-w-xl mx-auto">Designer de Produto apaixonado por criar experiências inovadoras e centradas no usuário. Atuo com estratégia, UX/UI e design de serviços, sempre buscando impacto positivo e soluções eficientes para negócios e pessoas.</p>
+      <p class="text-lg text-gray-600 dark:text-gray-400">Designer de Produto - UX/UI - Inovação e Estratégia - Design de Serviço - Mercado Financeiro e Fintechs</p>
+    </div>
   </header>
 
   <section class="mb-10">
     <h2 class="text-xl font-semibold border-b border-gray-300 pb-1 mb-5 text-gray-700 dark:text-gray-200">Contato</h2>
-    <p>LinkedIn: <a href="https://www.linkedin.com/in/eduardodamasceno" target="_blank" class="break-all text-blue-600 no-underline hover:underline">www.linkedin.com/in/eduardodamasceno</a></p>
+    <p>
+      <a href="https://www.linkedin.com/in/eduardodamasceno" target="_blank" class="break-all text-blue-600 no-underline hover:underline flex items-center gap-1" aria-label="LinkedIn de Eduardo Damasceno">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 inline-block"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm15.5 11.268h-3v-5.604c0-1.337-.025-3.063-1.868-3.063-1.868 0-2.154 1.459-2.154 2.967v5.7h-3v-10h2.881v1.367h.041c.401-.761 1.379-1.563 2.841-1.563 3.039 0 3.6 2.001 3.6 4.601v5.595z"/></svg>
+        www.linkedin.com/in/eduardodamasceno
+      </a>
+    </p>
   </section>
 
   <section class="mb-10">
@@ -111,11 +123,41 @@
   </section>
 
   </div>
+  </main>
+  <footer class="text-center py-6 text-xs text-gray-500 dark:text-gray-400">
+    © 2024 Eduardo Damasceno. Todos os direitos reservados.
+  </footer>
 </body>
 <script>
   const btn = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  const themeIcon = document.getElementById('themeIcon');
+  // Persistência do tema
+  function setThemeIcon(isDark) {
+    themeIcon.textContent = isDark ? '🌙' : '🌞';
+  }
+  function setAriaPressed(isDark) {
+    btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+  }
+  function applyThemeFromStorage() {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      setThemeIcon(true);
+      setAriaPressed(true);
+    } else {
+      root.classList.remove('dark');
+      setThemeIcon(false);
+      setAriaPressed(false);
+    }
+  }
+  applyThemeFromStorage();
   btn.addEventListener('click', () => {
-    document.documentElement.classList.toggle('dark');
+    const isDark = !root.classList.contains('dark');
+    root.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    setThemeIcon(isDark);
+    setAriaPressed(isDark);
   });
 </script>
 </html>
