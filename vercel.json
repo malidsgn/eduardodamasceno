@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/api/upload", "destination": "/api/transcribe" },
+    { "source": "/api/transcript", "destination": "/api/transcribe" },
+    { "source": "/api/transcript/:id", "destination": "/api/transcribe" }
+  ]
+}
+
