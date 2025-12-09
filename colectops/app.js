@@ -9,14 +9,16 @@
 // ===================================
 
 const CONFIG = {
-  // API Key agora está protegida no servidor (Vercel)
-  // Não precisa mais ficar exposta aqui!
+  // API Key necessária apenas para upload de arquivos grandes
+  // A transcrição (parte cara) ainda passa pelo proxy protegido
+  API_KEY: 'd6c8896a22b04763ba45176813826a56',
   
   // Access password (change this to your preferred password)
   ACCESS_PASSWORD: 'colectops2024',
   
-  // API Settings - Usando proxy da Vercel
-  API_BASE_URL: 'https://eduardodamasceno.vercel.app/api/transcribe',
+  // API Settings
+  UPLOAD_URL: 'https://api.assemblyai.com/v2/upload', // Upload direto (arquivos grandes)
+  PROXY_URL: 'https://eduardodamasceno.vercel.app/api/transcribe', // Proxy para transcrição
   POLLING_INTERVAL: 5000, // 5 seconds
   MAX_POLLING_ATTEMPTS: 120, // 10 minutes max
   MAX_FILE_SIZE: 1024 * 1024 * 1024, // 1GB
@@ -331,17 +333,18 @@ async function processFile(file) {
 // ===================================
 
 async function uploadAudio(file) {
-  const response = await fetch(`${CONFIG.API_BASE_URL}/upload`, {
+  // Upload direto para AssemblyAI (suporta arquivos grandes)
+  const response = await fetch(CONFIG.UPLOAD_URL, {
     method: 'POST',
     headers: {
-      'X-Password': CONFIG.ACCESS_PASSWORD
+      'Authorization': CONFIG.API_KEY
     },
     body: file
   });
   
   if (!response.ok) {
     if (response.status === 401) {
-      throw new Error('Senha incorreta ou sessão expirada');
+      throw new Error('API key inválida ou expirada');
     }
     throw new Error(`Erro no upload: ${response.status}`);
   }
@@ -356,7 +359,8 @@ async function uploadAudio(file) {
 }
 
 async function startTranscription(audioUrl) {
-  const response = await fetch(`${CONFIG.API_BASE_URL}/transcript`, {
+  // Transcrição passa pelo proxy (protegido)
+  const response = await fetch(`${CONFIG.PROXY_URL}/transcript`, {
     method: 'POST',
     headers: {
       'X-Password': CONFIG.ACCESS_PASSWORD,
@@ -371,7 +375,7 @@ async function startTranscription(audioUrl) {
   
   if (!response.ok) {
     if (response.status === 401) {
-      throw new Error('Senha incorreta ou sessão expirada');
+      throw new Error('Senha incorreta');
     }
     throw new Error(`Erro ao iniciar transcrição: ${response.status}`);
   }
@@ -389,7 +393,8 @@ async function pollTranscription(transcriptId) {
   let attempts = 0;
   
   while (attempts < CONFIG.MAX_POLLING_ATTEMPTS) {
-    const response = await fetch(`${CONFIG.API_BASE_URL}/transcript/${transcriptId}`, {
+    // Verificação passa pelo proxy (protegido)
+    const response = await fetch(`${CONFIG.PROXY_URL}/transcript/${transcriptId}`, {
       headers: {
         'X-Password': CONFIG.ACCESS_PASSWORD
       }
