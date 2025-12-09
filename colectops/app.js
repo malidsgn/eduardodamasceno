@@ -9,14 +9,14 @@
 // ===================================
 
 const CONFIG = {
-  // AssemblyAI API Key (same as Flutter app)
-  API_KEY: 'd6c8896a22b04763ba45176813826a56',
+  // API Key agora está protegida no servidor (Vercel)
+  // Não precisa mais ficar exposta aqui!
   
   // Access password (change this to your preferred password)
   ACCESS_PASSWORD: 'colectops2024',
   
-  // API Settings
-  API_BASE_URL: 'https://api.assemblyai.com/v2',
+  // API Settings - Usando proxy da Vercel
+  API_BASE_URL: 'https://eduardodamasceno-eel5i8grt-eduardo-damascenos-projects.vercel.app/api/transcribe',
   POLLING_INTERVAL: 5000, // 5 seconds
   MAX_POLLING_ATTEMPTS: 120, // 10 minutes max
   MAX_FILE_SIZE: 1024 * 1024 * 1024, // 1GB
@@ -334,14 +334,14 @@ async function uploadAudio(file) {
   const response = await fetch(`${CONFIG.API_BASE_URL}/upload`, {
     method: 'POST',
     headers: {
-      'Authorization': CONFIG.API_KEY
+      'X-Password': CONFIG.ACCESS_PASSWORD
     },
     body: file
   });
   
   if (!response.ok) {
     if (response.status === 401) {
-      throw new Error('API key inválida ou expirada');
+      throw new Error('Senha incorreta ou sessão expirada');
     }
     throw new Error(`Erro no upload: ${response.status}`);
   }
@@ -359,7 +359,7 @@ async function startTranscription(audioUrl) {
   const response = await fetch(`${CONFIG.API_BASE_URL}/transcript`, {
     method: 'POST',
     headers: {
-      'Authorization': CONFIG.API_KEY,
+      'X-Password': CONFIG.ACCESS_PASSWORD,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -371,7 +371,7 @@ async function startTranscription(audioUrl) {
   
   if (!response.ok) {
     if (response.status === 401) {
-      throw new Error('API key inválida ou expirada');
+      throw new Error('Senha incorreta ou sessão expirada');
     }
     throw new Error(`Erro ao iniciar transcrição: ${response.status}`);
   }
@@ -391,7 +391,7 @@ async function pollTranscription(transcriptId) {
   while (attempts < CONFIG.MAX_POLLING_ATTEMPTS) {
     const response = await fetch(`${CONFIG.API_BASE_URL}/transcript/${transcriptId}`, {
       headers: {
-        'Authorization': CONFIG.API_KEY
+        'X-Password': CONFIG.ACCESS_PASSWORD
       }
     });
     
