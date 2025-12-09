@@ -16,7 +16,7 @@ const CONFIG = {
   ACCESS_PASSWORD: 'colectops2024',
   
   // API Settings - Usando proxy da Vercel
-  API_BASE_URL: 'https://eduardodamasceno-eel5i8grt-eduardo-damascenos-projects.vercel.app/api/transcribe',
+  API_BASE_URL: 'https://eduardodamasceno.vercel.app/api/transcribe',
   POLLING_INTERVAL: 5000, // 5 seconds
   MAX_POLLING_ATTEMPTS: 120, // 10 minutes max
   MAX_FILE_SIZE: 1024 * 1024 * 1024, // 1GB
