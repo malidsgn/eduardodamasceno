@@ -11,29 +11,37 @@ export const config = {
   runtime: 'edge',
 };
 
-export default async function handler(request) {
-  // CORS headers
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Password',
-  };
+// CORS headers - definido globalmente
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Password',
+};
 
-  // Handle preflight
+export default async function handler(request) {
+  // Handle preflight OPTIONS request
   if (request.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { status: 200, headers: corsHeaders });
   }
 
   try {
     const url = new URL(request.url);
     const path = url.pathname.replace('/api/transcribe', '');
     
-    // Verificar senha (opcional)
+    // Verificar senha
     const password = request.headers.get('X-Password');
     if (ACCESS_PASSWORD && password !== ACCESS_PASSWORD) {
       return new Response(
         JSON.stringify({ error: 'Senha incorreta' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Verificar se API key existe
+    if (!ASSEMBLYAI_API_KEY) {
+      return new Response(
+        JSON.stringify({ error: 'API key não configurada no servidor' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -48,6 +56,12 @@ export default async function handler(request) {
       assemblyUrl += '/transcript';
     }
 
+    // Preparar body se não for GET
+    let body = null;
+    if (request.method !== 'GET') {
+      body = await request.arrayBuffer();
+    }
+
     // Forward request to AssemblyAI
     const assemblyResponse = await fetch(assemblyUrl, {
       method: request.method,
@@ -55,10 +69,17 @@ export default async function handler(request) {
         'Authorization': ASSEMBLYAI_API_KEY,
         'Content-Type': request.headers.get('Content-Type') || 'application/json',
       },
-      body: request.method !== 'GET' ? await request.arrayBuffer() : undefined,
+      body: body,
     });
 
-    const data = await assemblyResponse.json();
+    // Tentar parsear como JSON, se falhar retorna texto
+    const responseText = await assemblyResponse.text();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      data = { error: responseText || 'Erro desconhecido da API' };
+    }
 
     return new Response(JSON.stringify(data), {
       status: assemblyResponse.status,
@@ -69,8 +90,9 @@ export default async function handler(request) {
     });
 
   } catch (error) {
+    console.error('Proxy error:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error.message || 'Erro interno do proxy' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
